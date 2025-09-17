@@ -104,7 +104,7 @@ Epoch 12: Train=99.74%, Val=99.40% ✅ TARGET ACHIEVED
 
 **Final Results**: 99.40% validation accuracy in 12 epochs
 
-![alt text](image-1.png)
+![alt text](image_1.png)
 ### Minimal Model (14,116 parameters)  
 ```
 Epoch 1: Train=96.34%, Val=97.76%
@@ -119,7 +119,7 @@ Epoch 8: Train=99.85%, Val=99.41% ✅ TARGET ACHIEVED
 
 **Final Results**: 99.41% validation accuracy in 8 epochs
 
-![alt text](image-2.png)
+![alt text](image_2.png)
 ## Model Comparison
 
 | Metric | Regularized Model | Minimal Model |
