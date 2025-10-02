@@ -86,7 +86,7 @@ import torch.nn.functional as F
 
 dropout_value = 0.1
 
-class Model_3(nn.Module):
+class Model_4(nn.Module):
     """
     Architecture identical to Model_2
     Key difference: Optimized hyperparameters
@@ -95,7 +95,7 @@ class Model_3(nn.Module):
     - dropout=0.1 (vs 0.05)
     """
     def __init__(self):
-        super(Model_3, self).__init__()
+        super(Model_4, self).__init__()
         
         # Input Block - C1
         self.convblock1 = nn.Sequential(

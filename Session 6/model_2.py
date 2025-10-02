@@ -108,9 +108,9 @@ import torch.nn.functional as F
 
 dropout_value = 0.05  # Note: This was 0.1 in Model_1, reduced to 0.05 here so as to not weaken model too much
 
-class Model_1(nn.Module):
+class Model_2(nn.Module):
     def __init__(self):
-        super(Model_1, self).__init__()
+        super(Model_2, self).__init__()
         
         # Input Block - C1
         self.convblock1 = nn.Sequential(
