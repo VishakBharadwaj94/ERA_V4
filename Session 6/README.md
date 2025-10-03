@@ -24,7 +24,7 @@ Achieving consistent 99.4%+ test accuracy on MNIST with under 8,000 parameters t
 
 ## Model Evolution
 
-### Baseline (13,808 params)
+### Baseline (13,808 params) (Code 10 in session)
 **Architecture**: Standard CNN with MaxPooling
 - 1→16→32→10→16→16→16→16→10 channels
 - MaxPool(2,2) for downsampling
