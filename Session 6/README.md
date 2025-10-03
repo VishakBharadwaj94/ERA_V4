@@ -36,7 +36,45 @@ Achieving consistent 99.4%+ test accuracy on MNIST with under 8,000 parameters t
 
 **Config**: `lr=0.01, StepLR(step_size=6, gamma=0.1), dropout=0.1`
 
-<summary>View Training Logs (20 epochs)</summary>
+```
+================================================================
+Layer (type)          Output Shape    Param #    RF    Jump    
+================================================================
+INPUT                 [-1, 1, 28, 28]     0       1      1
+Conv2d-1             [-1, 16, 26, 26]    144      3      1
+ReLU-2               [-1, 16, 26, 26]      0      3      1
+BatchNorm2d-3        [-1, 16, 26, 26]     32      3      1
+Dropout-4            [-1, 16, 26, 26]      0      3      1
+Conv2d-5             [-1, 32, 24, 24]  4,608      5      1
+ReLU-6               [-1, 32, 24, 24]      0      5      1
+BatchNorm2d-7        [-1, 32, 24, 24]     64      5      1
+Dropout-8            [-1, 32, 24, 24]      0      5      1
+Conv2d-9             [-1, 10, 24, 24]    320      5      1
+MaxPool2d-10         [-1, 10, 12, 12]      0      6      2
+Conv2d-11            [-1, 16, 10, 10]  1,440     10      2
+ReLU-12              [-1, 16, 10, 10]      0     10      2
+BatchNorm2d-13       [-1, 16, 10, 10]     32     10      2
+Dropout-14           [-1, 16, 10, 10]      0     10      2
+Conv2d-15            [-1, 16, 8, 8]    2,304     14      2
+ReLU-16              [-1, 16, 8, 8]        0     14      2
+BatchNorm2d-17       [-1, 16, 8, 8]       32     14      2
+Dropout-18           [-1, 16, 8, 8]        0     14      2
+Conv2d-19            [-1, 16, 6, 6]    2,304     18      2
+ReLU-20              [-1, 16, 6, 6]        0     18      2
+BatchNorm2d-21       [-1, 16, 6, 6]       32     18      2
+Dropout-22           [-1, 16, 6, 6]        0     18      2
+Conv2d-23            [-1, 16, 6, 6]    2,304     22      2
+ReLU-24              [-1, 16, 6, 6]        0     22      2
+BatchNorm2d-25       [-1, 16, 6, 6]       32     22      2
+Dropout-26           [-1, 16, 6, 6]        0     22      2
+AvgPool2d-27         [-1, 16, 1, 1]        0     32      2
+Conv2d-28            [-1, 10, 1, 1]      160     32      2
+================================================================
+Total params: 13,808
+Final RF: 32×32 (covers entire 28×28 digit)
+================================================================
+```
+**Training Logs**
 
 | Epoch | Train Acc | Test Acc | Test Loss | Notes |
 |-------|-----------|----------|-----------|-------|
@@ -75,7 +113,43 @@ Achieving consistent 99.4%+ test accuracy on MNIST with under 8,000 parameters t
 
 **Config**: `lr=0.01, StepLR(step_size=6, gamma=0.1), dropout=0.05`
 
-<summary>View Training Logs (20 epochs)</summary>
+```
+================================================================
+Layer (type)          Output Shape    Param #    RF    Jump
+================================================================
+INPUT                 [-1, 1, 28, 28]     0       1      1
+Conv2d-1             [-1, 10, 26, 26]     90      3      1
+ReLU-2               [-1, 10, 26, 26]      0      3      1
+BatchNorm2d-3        [-1, 10, 26, 26]     20      3      1
+Dropout-4            [-1, 10, 26, 26]      0      3      1
+Conv2d-5             [-1, 16, 24, 24]  1,440      5      1
+ReLU-6               [-1, 16, 24, 24]      0      5      1
+BatchNorm2d-7        [-1, 16, 24, 24]     32      5      1
+Dropout-8            [-1, 16, 24, 24]      0      5      1
+Conv2d-9 (stride=2)  [-1, 10, 11, 11]  1,440      7      2
+ReLU-10              [-1, 10, 11, 11]      0      7      2
+BatchNorm2d-11       [-1, 10, 11, 11]     20      7      2
+Dropout-12           [-1, 10, 11, 11]      0      7      2
+Conv2d-13            [-1, 12, 9, 9]    1,080     11      2
+ReLU-14              [-1, 12, 9, 9]        0     11      2
+BatchNorm2d-15       [-1, 12, 9, 9]       24     11      2
+Dropout-16           [-1, 12, 9, 9]        0     11      2
+Conv2d-17            [-1, 12, 7, 7]    1,296     15      2
+ReLU-18              [-1, 12, 7, 7]        0     15      2
+BatchNorm2d-19       [-1, 12, 7, 7]       24     15      2
+Dropout-20           [-1, 12, 7, 7]        0     15      2
+Conv2d-21            [-1, 16, 5, 5]    1,728     19      2
+ReLU-22              [-1, 16, 5, 5]        0     19      2
+BatchNorm2d-23       [-1, 16, 5, 5]       32     19      2
+Dropout-24           [-1, 16, 5, 5]        0     19      2
+AvgPool2d-25         [-1, 16, 1, 1]        0     27      2
+Conv2d-26            [-1, 10, 1, 1]      160     27      2
+================================================================
+Total params: 7,386
+Final RF: 27×27 (covers most of 28×28 digit)
+================================================================
+```
+**Training Logs**
 
 | Epoch | Train Acc | Test Acc | Test Loss | Notes |
 |-------|-----------|----------|-----------|-------|
@@ -110,7 +184,7 @@ Achieving consistent 99.4%+ test accuracy on MNIST with under 8,000 parameters t
 ---
 
 ### Model_3: Strategic Capacity (7,849 params)
-**Strategy**: Add capacity where receptive field sees digits (RF 11-15)
+**Strategy**: Add capacity where receptive field sees digits (RF 11-15) also increase dropout since there are more parameters
 
 **Architecture**: 
 - Channels: 1→10→16→10→**13**→**13**→16→10
@@ -119,7 +193,43 @@ Achieving consistent 99.4%+ test accuracy on MNIST with under 8,000 parameters t
 
 **Config**: `lr=0.01, StepLR(step_size=6, gamma=0.1), dropout=0.1`
 
-<summary>View Training Logs (20 epochs)</summary>
+```
+================================================================
+Layer (type)          Output Shape    Param #    RF    Jump
+================================================================
+INPUT                 [-1, 1, 28, 28]     0       1      1
+Conv2d-1             [-1, 10, 26, 26]     90      3      1
+ReLU-2               [-1, 10, 26, 26]      0      3      1
+BatchNorm2d-3        [-1, 10, 26, 26]     20      3      1
+Dropout-4            [-1, 10, 26, 26]      0      3      1
+Conv2d-5             [-1, 16, 24, 24]  1,440      5      1
+ReLU-6               [-1, 16, 24, 24]      0      5      1
+BatchNorm2d-7        [-1, 16, 24, 24]     32      5      1
+Dropout-8            [-1, 16, 24, 24]      0      5      1
+Conv2d-9 (stride=2)  [-1, 10, 11, 11]  1,440      7      2
+ReLU-10              [-1, 10, 11, 11]      0      7      2
+BatchNorm2d-11       [-1, 10, 11, 11]     20      7      2
+Dropout-12           [-1, 10, 11, 11]      0      7      2
+Conv2d-13            [-1, 13, 9, 9]    1,170     11      2  ← Added capacity
+ReLU-14              [-1, 13, 9, 9]        0     11      2
+BatchNorm2d-15       [-1, 13, 9, 9]       26     11      2
+Dropout-16           [-1, 13, 9, 9]        0     11      2
+Conv2d-17            [-1, 13, 7, 7]    1,521     15      2  ← Added capacity
+ReLU-18              [-1, 13, 7, 7]        0     15      2
+BatchNorm2d-19       [-1, 13, 7, 7]       26     15      2
+Dropout-20           [-1, 13, 7, 7]        0     15      2
+Conv2d-21            [-1, 16, 5, 5]    1,872     19      2
+ReLU-22              [-1, 16, 5, 5]        0     19      2
+BatchNorm2d-23       [-1, 16, 5, 5]       32     19      2
+Dropout-24           [-1, 16, 5, 5]        0     19      2
+AvgPool2d-25         [-1, 16, 1, 1]        0     27      2
+Conv2d-26            [-1, 10, 1, 1]      160     27      2
+================================================================
+Total params: 7,849
+Final RF: 27×27 (covers most of 28×28 digit)
+================================================================
+```
+**Training Logs**
 
 | Epoch | Train Acc | Test Acc | Test Loss | Notes |
 |-------|-----------|----------|-----------|-------|
@@ -159,7 +269,7 @@ Achieving consistent 99.4%+ test accuracy on MNIST with under 8,000 parameters t
 
 **Config**: `lr=0.1, StepLR(step_size=5, gamma=0.5), dropout=0.1`
 
-<summary>View Training Logs (20 epochs)</summary>
+**Training Logs**
 
 | Epoch | Train Acc | Test Acc | Test Loss | LR | Notes |
 |-------|-----------|----------|-----------|-----|-------|
@@ -202,7 +312,7 @@ Achieving consistent 99.4%+ test accuracy on MNIST with under 8,000 parameters t
 
 **Config**: `lr=0.1, StepLR(step_size=4, gamma=0.4), dropout=0.1`
 
-<summary>View Training Logs (20 epochs)</summary>
+**Training Logs**
 
 | Epoch | Train Acc | Test Acc | Test Loss | LR | Notes |
 |-------|-----------|----------|-----------|-----|-------|

@@ -2,81 +2,69 @@
 ================================================================================
 TARGET:
 ================================================================================
-Achieve maximum consistency and earliest possible convergence to 99.4%+
-- Keep proven Model_2 architecture: 1→10→16→10→13→13→16→10 (7,849 params)
-- Optimize LR schedule for smoother convergence: StepLR(step_size=4, gamma=0.4)
-- More frequent decay (every 4 epochs vs 5) for finer-grained control
-- Gentler decay (0.4× vs 0.5×) to reduce volatility after LR drops
-- Maintain lr=0.1 start and dropout=0.1
-- Goal: Eliminate the epoch 10-14 volatility seen in Model_3
-- Target: Consistent 99.4%+ from FIRST achievement onwards (no dips)
+Test if learning rate is the bottleneck (not architecture capacity)
+- Keep Model_3 architecture (7,849 params) - already proven sufficient
+- Increase LR 10×: 0.01 → 0.1 for faster exploration
+- Use gentler decay: StepLR(step_size=5, gamma=0.5) vs (6, 0.1)
+- Goal: Break through the 99.35% plateau and achieve consistent 99.4%+
 
-Hypothesis: More frequent but gentler LR decay will provide smoother learning
-curve and earlier stable consistency compared to Model_3's StepLR(5, 0.5).
+Hypothesis: Higher LR will unlock the capacity that Model_3 already has
 
-Expected: Hit 99.4%+ by epoch 9 and maintain WITHOUT drops
+Expected: Should hit 99.4%+ by epoch 10-12 if hypothesis correct
 
 ================================================================================
 RESULTS:
 ================================================================================
-Parameters: 7,849 / 8,000 (98.1% of budget)
+Parameters: 7,849 / 8,000 (same as Model_3)
 
 Training Configuration:
-- Optimizer: SGD(lr=0.1, momentum=0.9)
-- Scheduler: StepLR(step_size=4, gamma=0.4)  [OPTIMAL]
+- Optimizer: SGD(lr=0.1, momentum=0.9)  [10× higher than Model_3]
+- Scheduler: StepLR(step_size=5, gamma=0.5)  [gentler than previous (6, 0.1)]
 - Dropout: 0.1
-- Data Augmentation: RandomRotation(±7°)
-- Batch Size: 128
+- Augmentation: RandomRotation(±7°)
 - Epochs: 20
 
-LR Schedule (More frequent, gentler):
-- Epochs 0-3:   LR = 0.100
-- Epochs 4-7:   LR = 0.040
-- Epochs 8-11:  LR = 0.016
-- Epochs 12-15: LR = 0.0064
-- Epochs 16-19: LR = 0.00256
-
 Performance:
-- Best Train Accuracy: 98.95% (Epoch 19)
-- Best Test Accuracy: 99.48% (Epoch 15)
-- First 99.4%+: Epoch 9 (99.41%)
-- Last 3 Epochs: [99.45%, 99.46%, 99.45%]
-- Epochs ≥99.4%: 9, 11, 12, 13, 14, 15, 16, 17, 18, 19 (10 total)
-- Consistent 99.4%+: YES ✓✓✓ (BEST RESULT)
+- Peak Test Accuracy: 99.48% (Epoch 19)
+- Last 3 Epochs: 99.47%, 99.46%, 99.48% (avg 99.47%)
+- Best Train Accuracy: 99.07%
+- First 99.4%+: Epoch 10 (99.43%)
 
-Detailed Epoch Progression:
-- Epoch 9: 99.41% ✓ FIRST HIT
-- Epoch 10: 99.37% (only dip below 99.4%)
-- Epoch 11: 99.44% ✓ (back above, stays there)
-- Epochs 12-19: ALL ≥99.42% ✓✓✓
 
 ================================================================================
 ANALYSIS:
 ================================================================================
 
-SUCCESS - All Requirements EXCEEDED:
-✓ Parameters: 7,849 < 8,000 (151 under budget)
-✓ Accuracy: 99.48% achieved
-✓ Consistency: Last 3 epochs ALL ≥99.45%
-✓ Speed: First hit 99.4%+ at epoch 9 (6 epochs under 15 limit)
-✓ Stability: 10 out of 11 epochs from epoch 9 onwards ≥99.4%
+What Worked:
+✓ SUCCESS - Hypothesis confirmed! LR was the bottleneck, not architecture
+✓ Achieved consistent 99.4%+ (last 3 epochs all ≥99.46%)
+✓ Same 7,849 params as Model_3, just better hyperparameters
+✓ First hit 99.4%+ at epoch 10 (within 15 epoch limit)
+✓ Peak 99.48% matches baseline Model_1 (13.8k params)
 
-Why This is THE Optimal Solution:
+Key Breakthrough:
+Same architecture, 10× higher LR:
+- Model_3 @ lr=0.01 → 99.35% (failed)
+- Model_4 @ lr=0.1 → 99.48% (success)
 
-1. **Fastest Convergence**: Hit 99.41% at epoch 9
-2. **Best Stability**: Only ONE dip below 99.4% after first achievement
-3. **Highest Consistency**: 10/11 final epochs ≥99.4% (91% consistency)
-4. **Smoothest Learning**: Gentler LR transitions reduced volatility
+T
+What Could Be Better:
+⚠ Minor volatility in epochs 10-14 (dipped to 99.35% at epoch 13)
 
-LR Schedule Optimization Validated:
+Next Optimization:
+For even smoother convergence, try:
+- step_size=4 (more frequent, less time to drift)
+- gamma=0.4 (gentler, smaller adjustments)
 
-StepLR(4, 0.4) is superior to both (5, 0.5) and (6, 0.1):
-- vs (6, 0.1): MUCH better - avoids the cliff drop and plateau
-- vs (5, 0.5): Marginally better - 1 epoch faster, more stable
+This should eliminate the epoch 10-14 volatility and achieve stable 99.4%+
+immediately after first hit.
 
-The more frequent (every 4 vs 5 epochs) and gentler (0.4× vs 0.5×) decay
-provides the model with more opportunities to adjust at each LR level,
-resulting in smoother convergence and earlier stability.
+Conclusion:
+Model_4 PROVES that architecture efficiency (strided conv, strategic capacity)
+combined with proper learning dynamics (high LR, gradual decay) can match
+baseline performance with 43% fewer parameters.
+
+The assignment target is ACHIEVED, but can be perfected further.
 ================================================================================
 """
 
