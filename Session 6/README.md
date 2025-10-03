@@ -346,28 +346,6 @@ Final RF: 27×27 (covers most of 28×28 digit)
 
 ---
 
-## Key Insights
-
-### 1. Strided Convolution Works
-Replacing MaxPool with stride=2 conv is parameter-efficient and effective. Reduced 13.8k → 7.4k params while maintaining learning capacity.
-
-### 2. Architecture vs Hyperparameters
-- Model_2 (7.4k) with lr=0.01 → 99.31% ✗
-- Model_3 (7.8k) with lr=0.01 → 99.35% ✗
-- Model_4 (7.8k) with lr=0.1 → 99.48% ✓
-
-Same architecture, 10× LR = success
-
-### 3. LR Schedule Matters
-- StepLR(6, 0.1): Too aggressive, plateau
-- StepLR(5, 0.5): Good, some volatility  
-- **StepLR(4, 0.4): Optimal, smooth**
-
-### 4. Parameter Efficiency Proven
-**13,808 → 7,849 params (-43%)** while matching 99.48% accuracy and converging faster (9 vs 10 epochs).
-
----
-
 ## Files
 
 Each file contains detailed TARGET/RESULTS/ANALYSIS:
@@ -398,16 +376,3 @@ for epoch in range(20):
     scheduler.step()
     test(model, device, test_loader)
 ```
-
----
-
-## Assignment Results
-
-**All requirements exceeded**:
-- ✓ Parameters: 7,849 / 8,000 (98.1%)
-- ✓ Accuracy: 99.48% peak, 99.45% last 3 avg
-- ✓ Epochs: First 99.4%+ at epoch 9 (6 under limit)
-- ✓ Consistency: 91% of final 11 epochs ≥99.4%
-- ✓ Documentation: Complete TARGET/RESULTS/ANALYSIS in all files
-
-**Core Learning**: Great architecture provides capacity. Optimal hyperparameters unlock it.
