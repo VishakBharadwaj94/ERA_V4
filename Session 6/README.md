@@ -33,21 +33,35 @@ Achieving consistent 99.4%+ test accuracy on MNIST with under 8,000 parameters t
 **Training**: `lr=0.01, StepLR(step_size=6, gamma=0.1), dropout=0.1`
 
 <details>
-<summary>Training Logs</summary>
+<summary>Complete Training Logs</summary>
 
-```
-EPOCH 0: Train 86.80% → Test 98.13%
-EPOCH 5: Train 98.65% → Test 99.20%
-EPOCH 9: Train 98.89% → Test 99.34%
-EPOCH 16: Train 99.00% → Test 99.41%
-EPOCH 19: Train 99.02% → Test 99.36%
+| Epoch | Train Acc | Test Acc | Test Loss | LR Phase | Notes |
+|-------|-----------|----------|-----------|----------|-------|
+| 0 | 86.80% | 98.13% | 0.0655 | 0.010 | Initial |
+| 1 | 97.63% | 98.78% | 0.0400 | 0.010 | |
+| 2 | 98.13% | 99.00% | 0.0318 | 0.010 | |
+| 3 | 98.38% | 99.09% | 0.0288 | 0.010 | |
+| 4 | 98.55% | 98.96% | 0.0320 | 0.010 | |
+| 5 | 98.65% | 99.20% | 0.0256 | 0.010 | |
+| 6 | 98.67% | 99.31% | 0.0232 | 0.001 | LR drop |
+| 7 | 98.70% | 99.29% | 0.0219 | 0.001 | |
+| 8 | 98.75% | 99.18% | 0.0232 | 0.001 | |
+| 9 | 98.89% | 99.34% | 0.0205 | 0.001 | |
+| 10 | 98.94% | 99.30% | 0.0216 | 0.001 | |
+| 11 | 98.92% | 99.28% | 0.0202 | 0.001 | |
+| 12 | 98.97% | 99.23% | 0.0226 | 0.001 | |
+| 13 | 98.92% | 99.25% | 0.0233 | 0.001 | |
+| 14 | 99.05% | 99.25% | 0.0212 | 0.001 | |
+| 15 | 99.03% | 99.29% | 0.0221 | 0.001 | |
+| 16 | 99.00% | **99.41%** | 0.0202 | 0.001 | |
+| 17 | 99.11% | 99.37% | 0.0197 | 0.001 | |
+| 18 | 99.13% | **99.41%** | 0.0175 | 0.001 | |
+| 19 | 99.02% | 99.36% | 0.0179 | 0.001 | |
 
-Peak: 99.41% (Epochs 16, 18)
-Last 3: 99.37%, 99.41%, 99.36%
-```
+**Summary**: Peak 99.41% | Last 3: 99.37%, 99.41%, 99.36% | Never consistent 99.4%
 </details>
 
-**Result**: Establishes baseline. 99.4%+ achievable but parameter budget exceeded.
+**Result**: Establishes baseline. Shows 99.4%+ is achievable but parameter budget exceeded.
 
 ---
 
@@ -60,24 +74,38 @@ Last 3: 99.37%, 99.41%, 99.36%
 **Training**: `lr=0.01, StepLR(step_size=6, gamma=0.1), dropout=0.05`
 
 <details>
-<summary>Training Logs</summary>
+<summary>Complete Training Logs</summary>
 
-```
-EPOCH 0: Train 88.50% → Test 97.46%
-EPOCH 5: Train 98.55% → Test 99.27%
-EPOCH 9: Train 98.92% → Test 99.31%
-EPOCH 13: Train 98.98% → Test 99.35%
-EPOCH 19: Train 99.01% → Test 99.31%
+| Epoch | Train Acc | Test Acc | Test Loss | LR Phase | Notes |
+|-------|-----------|----------|-----------|----------|-------|
+| 0 | 88.08% | 96.92% | 0.1107 | 0.010 | Initial |
+| 1 | 97.25% | 98.57% | 0.0501 | 0.010 | |
+| 2 | 97.87% | 98.69% | 0.0442 | 0.010 | |
+| 3 | 98.11% | 98.66% | 0.0409 | 0.010 | |
+| 4 | 98.33% | 99.03% | 0.0335 | 0.010 | |
+| 5 | 98.50% | 99.12% | 0.0277 | 0.010 | |
+| 6 | 98.78% | 99.25% | 0.0239 | 0.001 | LR drop, plateau starts |
+| 7 | 98.90% | 99.25% | 0.0235 | 0.001 | |
+| 8 | 98.83% | 99.26% | 0.0237 | 0.001 | |
+| 9 | 98.86% | 99.26% | 0.0229 | 0.001 | |
+| 10 | 98.87% | 99.29% | 0.0231 | 0.001 | |
+| 11 | 98.89% | 99.29% | 0.0229 | 0.001 | |
+| 12 | 98.92% | 99.27% | 0.0228 | 0.001 | |
+| 13 | 98.96% | 99.27% | 0.0228 | 0.001 | |
+| 14 | 98.96% | 99.29% | 0.0228 | 0.001 | |
+| 15 | 98.89% | 99.29% | 0.0228 | 0.001 | |
+| 16 | 98.91% | 99.31% | 0.0225 | 0.001 | Peak |
+| 17 | 98.93% | 99.25% | 0.0228 | 0.001 | |
+| 18 | 98.89% | 99.29% | 0.0223 | 0.001 | |
+| 19 | 98.94% | 99.29% | 0.0225 | 0.001 | |
 
-Peak: 99.35% (Epoch 13)
-Last 3: 99.34%, 99.29%, 99.31%
-```
+**Summary**: Peak 99.31% | Last 3: 99.25%, 99.29%, 99.29% | Failed to reach 99.4%
 </details>
 
 **Analysis**: 
 - ✓ Strided conv validated as parameter-efficient
 - ✓ Under 8k budget with room to spare (614 params)
-- ✗ Failed to reach 99.4% - peaked at 99.35%
+- ✗ Failed to reach 99.4% - peaked at 99.31%
 - Issue: Conservative LR (0.01) + aggressive decay (0.1×) causes plateau at epoch 6
 
 ---
@@ -91,23 +119,37 @@ Last 3: 99.34%, 99.29%, 99.31%
 **Training**: `lr=0.01, StepLR(step_size=6, gamma=0.1), dropout=0.1`
 
 <details>
-<summary>Training Logs</summary>
+<summary>Complete Training Logs</summary>
 
-```
-EPOCH 0: Train 88.50% → Test 97.46%
-EPOCH 5: Train 98.55% → Test 99.27%
-EPOCH 9: Train 98.92% → Test 99.31%
-EPOCH 13: Train 98.98% → Test 99.35%
-EPOCH 19: Train 99.01% → Test 99.31%
+| Epoch | Train Acc | Test Acc | Test Loss | LR Phase | Notes |
+|-------|-----------|----------|-----------|----------|-------|
+| 0 | 88.50% | 97.46% | 0.0846 | 0.010 | Initial |
+| 1 | 97.36% | 98.49% | 0.0491 | 0.010 | |
+| 2 | 97.95% | 98.92% | 0.0381 | 0.010 | |
+| 3 | 98.25% | 98.91% | 0.0344 | 0.010 | |
+| 4 | 98.39% | 99.06% | 0.0289 | 0.010 | |
+| 5 | 98.55% | 99.27% | 0.0259 | 0.010 | |
+| 6 | 98.80% | 99.27% | 0.0225 | 0.001 | LR drop, plateau |
+| 7 | 98.88% | 99.29% | 0.0212 | 0.001 | |
+| 8 | 98.90% | 99.30% | 0.0209 | 0.001 | |
+| 9 | 98.92% | 99.31% | 0.0205 | 0.001 | |
+| 10 | 98.90% | 99.30% | 0.0212 | 0.001 | |
+| 11 | 98.99% | 99.28% | 0.0213 | 0.001 | |
+| 12 | 98.96% | 99.30% | 0.0205 | 0.001 | |
+| 13 | 98.98% | 99.35% | 0.0205 | 0.001 | Peak |
+| 14 | 98.95% | 99.33% | 0.0204 | 0.001 | |
+| 15 | 99.00% | 99.33% | 0.0204 | 0.001 | |
+| 16 | 98.96% | 99.33% | 0.0207 | 0.001 | |
+| 17 | 98.96% | 99.34% | 0.0201 | 0.001 | |
+| 18 | 99.00% | 99.29% | 0.0209 | 0.001 | |
+| 19 | 99.01% | 99.31% | 0.0207 | 0.001 | |
 
-Peak: 99.35% (Epoch 13)
-Last 3: 99.34%, 99.29%, 99.31%
-```
+**Summary**: Peak 99.35% | Last 3: 99.34%, 99.29%, 99.31% | Failed to reach 99.4%
 </details>
 
 **Analysis**:
 - Strategic capacity increase did NOT solve the problem
-- Same performance as different architecture with similar params
+- Same performance pattern as Model_1 despite more params
 - Confirmed: Architecture is not the bottleneck, LR schedule is
 
 ---
@@ -121,26 +163,39 @@ Last 3: 99.34%, 99.29%, 99.31%
 **Training**: `lr=0.1, StepLR(step_size=5, gamma=0.5), dropout=0.1`
 
 <details>
-<summary>Training Logs</summary>
+<summary>Complete Training Logs</summary>
 
-```
-EPOCH 0: Train 93.19% → Test 98.16%
-EPOCH 5: Train 98.62% → Test 99.37%
-EPOCH 9: Train 98.77% → Test 99.35%
-EPOCH 10: Train 98.89% → Test 99.43% ← FIRST HIT
-EPOCH 15: Train 99.03% → Test 99.46%
-EPOCH 19: Train 99.05% → Test 99.48%
+| Epoch | Train Acc | Test Acc | Test Loss | LR Phase | Notes |
+|-------|-----------|----------|-----------|----------|-------|
+| 0 | 93.19% | 98.16% | 0.0543 | 0.100 | Initial |
+| 1 | 97.62% | 98.90% | 0.0390 | 0.100 | |
+| 2 | 97.99% | 99.08% | 0.0316 | 0.100 | |
+| 3 | 98.20% | 98.88% | 0.0345 | 0.100 | |
+| 4 | 98.34% | 99.20% | 0.0273 | 0.100 | |
+| 5 | 98.62% | **99.37%** | 0.0237 | 0.050 | LR drop, early touch |
+| 6 | 98.75% | 99.33% | 0.0220 | 0.050 | |
+| 7 | 98.75% | 99.31% | 0.0217 | 0.050 | |
+| 8 | 98.76% | 99.35% | 0.0217 | 0.050 | |
+| 9 | 98.77% | 99.35% | 0.0222 | 0.050 | |
+| 10 | 98.89% | **99.43%** | 0.0206 | 0.025 | **First ≥99.4%** |
+| 11 | 98.92% | 99.39% | 0.0204 | 0.025 | Drop |
+| 12 | 98.94% | 99.41% | 0.0205 | 0.025 | |
+| 13 | 98.98% | 99.35% | 0.0202 | 0.025 | Drop |
+| 14 | 98.92% | 99.39% | 0.0195 | 0.025 | |
+| 15 | 99.03% | **99.46%** | 0.0190 | 0.0125 | LR drop, stable |
+| 16 | 99.03% | **99.44%** | 0.0200 | 0.0125 | |
+| 17 | 99.06% | **99.47%** | 0.0193 | 0.0125 | |
+| 18 | 99.07% | **99.46%** | 0.0200 | 0.0125 | |
+| 19 | 99.05% | **99.48%** | 0.0191 | 0.0125 | Peak |
 
-Peak: 99.48% (Epoch 19)
-Last 3: 99.47%, 99.46%, 99.48%
-```
+**Summary**: Peak 99.48% | Last 3: 99.47%, 99.46%, 99.48% | First 99.4%: Epoch 10
 </details>
 
 **Analysis**:
 - ✓ SUCCESS - Achieved consistent 99.4%+
 - First hit at epoch 10 (within 15 epoch limit)
-- Minor volatility in epochs 10-14 (dropped to 99.35%)
-- Stable from epoch 15 onwards
+- Minor volatility in epochs 10-14 (dropped to 99.35% at epoch 13)
+- Stable from epoch 15 onwards (all ≥99.44%)
 
 ---
 
