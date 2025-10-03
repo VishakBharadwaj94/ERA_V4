@@ -2,84 +2,79 @@
 ================================================================================
 TARGET:
 ================================================================================
-Test if learning rate is the bottleneck (not architecture capacity)
-- Keep Model_3 architecture (7,849 params) - already proven sufficient
-- Increase LR 10×: 0.01 → 0.1 for faster exploration
-- Use gentler decay: StepLR(step_size=5, gamma=0.5) vs (6, 0.1)
-- Goal: Break through the 99.35% plateau and achieve consistent 99.4%+
+Eliminate Model_4's epoch 10-14 volatility for smoothest possible convergence
+- Keep proven architecture (7,849 params) and lr=0.1 start
+- Optimize LR schedule: StepLR(step_size=4, gamma=0.4)
+  * More frequent decay (every 4 vs 5 epochs)
+  * Gentler decay (0.4× vs 0.5×)
+- Goal: Stable 99.4%+ immediately after first hit (no dips)
 
-Hypothesis: Higher LR will unlock the capacity that Model_3 already has
-
-Expected: Should hit 99.4%+ by epoch 10-12 if hypothesis correct
+Expected: Hit 99.4%+ by epoch 9 and maintain without volatility
 
 ================================================================================
 RESULTS:
 ================================================================================
-Parameters: 7,849 / 8,000 (same as Model_3)
+Parameters: 7,849 / 8,000 (98.1% of budget)
 
 Training Configuration:
-- Optimizer: SGD(lr=0.1, momentum=0.9)  [10× higher than Model_3]
-- Scheduler: StepLR(step_size=5, gamma=0.5)  [gentler than previous (6, 0.1)]
+- Optimizer: SGD(lr=0.1, momentum=0.9)
+- Scheduler: StepLR(step_size=4, gamma=0.4)  [OPTIMAL]
 - Dropout: 0.1
 - Augmentation: RandomRotation(±7°)
 - Epochs: 20
 
 Performance:
-- Peak Test Accuracy: 99.48% (Epoch 19)
-- Last 3 Epochs: 99.47%, 99.46%, 99.48% (avg 99.47%)
-- Best Train Accuracy: 99.07%
-- First 99.4%+: Epoch 10 (99.43%)
+- Peak Test Accuracy: 99.48% (Epoch 15)
+- Last 3 Epochs: 99.45%, 99.46%, 99.45% (avg 99.45%)
+- Best Train Accuracy: 98.95%
+- First 99.4%+: Epoch 9 (99.41%)
+- Consistency: 10 out of 11 final epochs ≥99.4% (91%)
 
+LR Schedule (5 phases, more granular):
+- 0.100 (Epochs 0-3): Initial fast learning
+- 0.040 (Epochs 4-7): First refinement
+- 0.016 (Epochs 8-11): Breakthrough phase
+- 0.0064 (Epochs 12-15): Fine-tuning
+- 0.00256 (Epochs 16-19): Final polish
+
+Epoch Progression:
+- Epoch 4: 99.24% (LR→0.04, steady climb)
+- Epoch 9: 99.41% FIRST HIT (LR→0.016)
+- Epoch 10: 99.37% (only dip)
+- Epoch 11: 99.44% (recovered)
+- Epochs 12-19: ALL ≥99.42% (stable!)
 
 ================================================================================
 ANALYSIS:
 ================================================================================
 
-What Worked:
-✓ SUCCESS - Hypothesis confirmed! LR was the bottleneck, not architecture
-✓ Achieved consistent 99.4%+ (last 3 epochs all ≥99.46%)
-✓ Same 7,849 params as Model_3, just better hyperparameters
-✓ First hit 99.4%+ at epoch 10 (within 15 epoch limit)
-✓ Peak 99.48% matches baseline Model_1 (13.8k params)
+OPTIMAL SOLUTION - All Requirements Exceeded:
+✓ Parameters: 7,849 / 8,000 (151 under budget)
+✓ Accuracy: 99.48% peak, 99.45% last 3 average
+✓ Speed: First 99.4%+ at epoch 9 (6 epochs under 15 limit)
+✓ Consistency: 91% of final epochs ≥99.4% (best of all models)
 
-Key Breakthrough:
-Same architecture, 10× higher LR:
-- Model_3 @ lr=0.01 → 99.35% (failed)
-- Model_4 @ lr=0.1 → 99.48% (success)
+Comparison to Model_4:
+- Model_4: First hit epoch 10, then 3 dips below 99.4% in next 5 epochs
+- Final: First hit epoch 9, only 1 dip in next 11 epochs
 
-T
-What Could Be Better:
-⚠ Minor volatility in epochs 10-14 (dipped to 99.35% at epoch 13)
-
-Next Optimization:
-For even smoother convergence, try:
-- step_size=4 (more frequent, less time to drift)
-- gamma=0.4 (gentler, smaller adjustments)
-
-This should eliminate the epoch 10-14 volatility and achieve stable 99.4%+
-immediately after first hit.
-
-Conclusion:
-Model_4 PROVES that architecture efficiency (strided conv, strategic capacity)
-combined with proper learning dynamics (high LR, gradual decay) can match
-baseline performance with 43% fewer parameters.
-
-The assignment target is ACHIEVED, but can be perfected further.
-================================================================================
+The more frequent (step=4) and gentler (gamma=0.4) decay creates:
+1. Smoother transitions between LR phases
+2. Less overshooting/undershooting after each drop
+3. Faster stabilization after breakthrough
 """
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-
+import torch.nn.functional as F 
 dropout_value = 0.1
-class Model_4(nn.Module):
+
+class Final_Model(nn.Module):
     """
-    Same architecture as Model_3 but with 10x higher learning rate
-    to test if learning rate was the bottleneck, not architecture capacity.
+    Same architecture as Model_3 and Model_4
     """
     def __init__(self):
-        super(Model_4, self).__init__()
+        super(Final_Model, self).__init__()
         
         # Input Block - C1
         self.convblock1 = nn.Sequential(

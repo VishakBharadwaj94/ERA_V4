@@ -59,11 +59,10 @@ dropout_value = 0.1
 
 class Model_3(nn.Module):
     """
-    Architecture identical to Model_2
-    Key difference: Optimized hyperparameters
-    - lr=0.1 (vs 0.01)
-    - StepLR(5, 0.5) (vs (6, 0.1))
-    - dropout=0.1 (vs 0.05)
+    Architecture similar to Model_2 except:
+    - convblock4: 12 -> 13 channels
+    - convblock5: 12 -> 13 channels
+    - Total params: 7,849
     """
     def __init__(self):
         super(Model_3, self).__init__()
