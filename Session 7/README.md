@@ -1,4 +1,4 @@
-# CIFAR-10 CNN with C1C2C3C40 Architecture
+# CIFAR-10 CNN
 
 A custom Convolutional Neural Network achieving **85.30% accuracy** on CIFAR-10 with **199,564 parameters** (under 200k constraint).
 
